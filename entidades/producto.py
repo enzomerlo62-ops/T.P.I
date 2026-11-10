@@ -30,7 +30,7 @@ class Producto(Base):
     @nombre.setter
     def nombre(self, valor: str) -> None:
         if not valor or not valor.strip():
-            raise DatoInvalidoError("El nombe del producto no pede estar vacío.")
+            raise DatoInvalidoError("El nombre del producto no puede estar vacío.")
         self.__nombre = valor.strip()
 
     @property
@@ -40,7 +40,7 @@ class Producto(Base):
     @precio.setter
     def precio(self, valor: float) -> None:
         if valor < 0:
-            raise PrecioInvalidoError("El precio no puee ser negatvo.")
+            raise PrecioInvalidoError("El precio no puede ser negativo.")
         self.__precio = float(valor)
 
     @property
