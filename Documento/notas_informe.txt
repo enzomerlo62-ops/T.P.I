@@ -1,0 +1,45 @@
+NOTAS PARA EL INFORME — TPI Food Store
+======================================
+Formato: [fecha] [quién] TIPO: qué pasó → por qué / cómo se resolvió
+Tipos: DECISIÓN | DIFICULTAD | CAPTURA | FUENTE
+
+
+DECISIONES TÉCNICAS
+-------------------
+[10/11] [L] DECISIÓN: contador de id compartido por todas las entidades (en Base) → ids únicos en todo el sistema, más simple de implementar
+[10/11] [L] DECISIÓN: Pedido.agregar_detalle verifica el stock pero NO lo descuenta; lo descuenta PedidoServicio al confirmar el pedido completo → si falla un detalle, no queda stock modificado a medias
+[10/11] [L] DECISIÓN: al agregar un producto repetido se compara la cantidad ACUMULADA contra el stock → evita superar el stock en dos pasos
+[10/11] [E] DECISIÓN: la contraseña no tiene property, solo verificar_contrasenia() → la contraseña nunca sale del objeto
+[10/11] [E] DECISIÓN: Pedido.detalles devuelve una tupla → la lista no se puede modificar desde afuera
+[10/11] [L] DECISIÓN: se definió __eq__ y __hash__ en Base comparando por id → una sola vez para todas las entidades
+[10/11] [E] DECISIÓN: el detalle guarda el precio unitario al momento de agregarse → el subtotal no cambia si después cambia el precio del producto
+[10/11] [L] DECISIÓN: setter de forma_pago en pedido.py asigna sin revisar nada  → se agrega la validación en el setters y en el constructor sin guiones bajos ("self.forma_pago = forma_pago") para pasar por el setters.
+[10/11] [L] DECISIÓN: class Pedido sin validacion de usuario en constructor → Si el usuario es inválido, el pedido no se crea, y así tampoco se gasta un id del contador
+[10/11] [L] DECISIÓN: No se respeta la regla de negocio de los Estados  → Se define una tabla de transiciones como diccionario pra los estados de los pedidos segun la regla de negocio
+
+DIFICULTADES Y SOLUCIONES
+-------------------------
+[10/11] [L] DIFICULTAD: ModuleNotFoundError al importar Pedido → el archivo se llamaba forma_de_pago.py y el import decía forma_pago; se renombró el archivo
+[10/11] [E] DIFICULTAD: Base se podía instanciar aunque heredaba de ABC → hace falta al menos un @abstractmethod; se declaró __str__ abstracto
+[10/11] [E] DIFICULTAD: los objetos daban "unhashable type" → al definir __eq__ Python anula __hash__; se agregó __hash__ por id
+[10/11] [L] DIFICULTAD: el subtotal cambiaba al cambiar el precio del producto → se guarda el precio unitario en DetallePedido
+
+
+CAPTURAS PENDIENTES (para "Decisiones técnicas y arquitectura")
+---------------------------------------------------------------
+- Inicio de sesión exitoso (ADMIN) y fallido
+- Menú de administrador y menú de cliente
+- Error de validación (ej.: precio negativo)
+- Pedido cancelado por falta de stock
+- Salida de pruebas.py
+- Estructura de carpetas del proyecto
+
+
+FUENTES (para la bibliografía)
+------------------------------
+- Documentación oficial de Python — abc: https://docs.python.org/3/library/abc.html
+- Documentación oficial de Python — enum: https://docs.python.org/3/library/enum.html
+- Documentación oficial de Python — datetime: https://docs.python.org/3/library/datetime.html
+- Documentación oficial de Python — Errores y excepciones: https://docs.python.org/3/tutorial/errors.html
+- PEP 484 — Type Hints: https://peps.python.org/pep-0484/
+- Material de la cátedra Programación II — UTN
