@@ -39,6 +39,8 @@ class Producto(Base):
 
     @precio.setter
     def precio(self, valor: float) -> None:
+        if not isinstance(valor,(int,float)) or isinstance(valor,bool):
+            raise PrecioInvalidoError("El precio debe ser un número.")
         if valor < 0:
             raise PrecioInvalidoError("El precio no puede ser negativo.")
         self.__precio = float(valor)
@@ -57,9 +59,11 @@ class Producto(Base):
 
     @stock.setter
     def stock(self, valor: int) -> None:
+        if not isinstance(valor,int) or isinstance(valor,bool):
+            raise DatoInvalidoError("El stock debe ser un número.")
         if valor < 0:
             raise DatoInvalidoError("El stock no puede ser negativo.")
-        self.__stock = int(valor)
+        self.__stock = valor
 
     @property
     def imagen(self) -> str:

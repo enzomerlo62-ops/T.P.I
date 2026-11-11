@@ -34,7 +34,7 @@ class Pedido(Base, Calculable):
         self.forma_pago = forma_pago        # -> pasa por el setter
         self.__usuario: Usuario = usuario
         self.__detalles: list[DetallePedido] = []
-        self.__total: int = 0.0
+        self.__total: float = 0.0
 
     @property
     def fecha(self) -> date:
@@ -118,7 +118,7 @@ class Pedido(Base, Calculable):
         self.calcular_total()
 
     def calcular_total(self) -> None:
-        self.__total = round((sum(d.subtotal for d in self.__detalles),0.0), 2)
+        self.__total = round(sum((d.subtotal for d in self.__detalles),0.0), 2)
 
     def __str__(self) -> str:
         return (

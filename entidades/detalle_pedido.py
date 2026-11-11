@@ -16,12 +16,12 @@ class DetallePedido(Base):
 
 #-------------- Validación y calculo interno un solo lugar -----------------------
 
-    @stacticmethod
+    @staticmethod
     def __validar_cantidad(cantidad:int)  -> None:
         if not isinstance(cantidad,int) or isinstance(cantidad,bool) or cantidad <= 0:
             raise DatoInvalidoError("La cantidad debe ser un número entero mayor a 0.")
         
-    def _actualizar_subtotal(self) -> None:
+    def __actualizar_subtotal(self) -> None:
         self.__subtotal: float = round(self.__cantidad * self.__precio_unitario, 2)
     
 #-------------- Solo lo usa Pedido, al agregar de nuevo el mismo producto ------------
@@ -38,7 +38,7 @@ class DetallePedido(Base):
         return self.__cantidad
 
     @property
-    def precio_unitario(self):
+    def precio_unitario(self) -> float:
         return self.__precio_unitario
 
     @property
