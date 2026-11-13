@@ -3,7 +3,7 @@ from servicios.categoria_servicio import CategoriaServicio
 from servicios.producto_servicio import ProductoServicio
 from servicios.pedido_servicio import PedidoServicio
 from entidades.usuario import Usuario
-from excepciones.excepciones_propias import FoodStoreError
+from excepciones.food_store_error import FoodStoreError
 
 class MenuCliente(Menu):
     def __init__(self, usuario: Usuario, categoria_servicio: CategoriaServicio, producto_servicio: ProductoServicio, pedido_servicio: PedidoServicio) -> None:

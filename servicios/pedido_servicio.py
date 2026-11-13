@@ -3,7 +3,7 @@ from entidades.usuario import Usuario
 from entidades.producto import Producto
 from enums.estado import Estado
 from enums.forma_pago import FormaPago
-from excepciones.excepciones_propias import EntidadNoEncontradaError, StockInsuficienteError, OperacionNoPermitidaError
+from excepciones.food_store_error import EntidadNoEncontradaError, StockInsuficienteError, OperacionNoPermitidaError
 
 class PedidoServicio:
     def __init__(self) -> None:

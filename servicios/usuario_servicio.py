@@ -1,6 +1,6 @@
 from entidades.usuario import Usuario
 from enums.rol import Rol
-from excepciones.excepciones_propias import EntidadNoEncontradaError, DuplicadoError, CredencialesInvalidasError, OperacionNoPermitidaError
+from excepciones.food_store_error import EntidadNoEncontradaError, DuplicadoError, CredencialesInvalidasError, OperacionNoPermitidaError
 
 class UsuarioServicio:
     def __init__(self) -> None:

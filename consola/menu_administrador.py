@@ -7,7 +7,7 @@ from entidades.usuario import Usuario
 from enums.rol import Rol
 from enums.estado import Estado
 from enums.forma_pago import FormaPago
-from excepciones.excepciones_propias import FoodStoreError
+from excepciones.food_store_error import FoodStoreError
 
 class MenuAdministrador(Menu):
     def __init__(self, usuario: Usuario, cat_serv: CategoriaServicio, prod_serv: ProductoServicio, usu_serv: UsuarioServicio, ped_serv: PedidoServicio) -> None:

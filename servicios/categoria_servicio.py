@@ -1,5 +1,5 @@
 from entidades.categoria import Categoria
-from excepciones.excepciones_propias import EntidadNoEncontradaError, DuplicadoError, OperacionNoPermitidaError
+from excepciones.food_store_error import EntidadNoEncontradaError, DuplicadoError, OperacionNoPermitidaError
 
 class CategoriaServicio:
     def __init__(self) -> None:

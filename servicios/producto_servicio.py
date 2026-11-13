@@ -1,6 +1,6 @@
 from entidades.producto import Producto
 from entidades.categoria import Categoria
-from excepciones.excepciones_propias import EntidadNoEncontradaError, PrecioInvalidoError
+from excepciones.food_store_error import EntidadNoEncontradaError, PrecioInvalidoError
 
 class ProductoServicio:
     def __init__(self) -> None:

@@ -5,7 +5,7 @@ from servicios.pedido_servicio import PedidoServicio
 from enums.rol import Rol
 from consola.menu_administrador import MenuAdministrador
 from consola.menu_cliente import MenuCliente
-from excepciones.excepciones_propias import CredencialesInvalidasError
+from excepciones.food_store_error import CredencialesInvalidasError
 
 def crear_menu(usuario, cat_serv, prod_serv, usu_serv, ped_serv):
     if usuario.rol == Rol.ADMIN:
