@@ -1,31 +1,31 @@
 class FoodStoreError(Exception):
     """Excepción base para el dominio Food Store."""
-    pass
+    
 
 
 class EntidadNoEncontradaError(FoodStoreError):
-    pass
+    """ Id inexistente o entidad no encontrada """
 
 
 class DatoInvalidoError(FoodStoreError):
-    pass
+    """ Texto vació, formato incorrecto o tipo de dato inválido """
 
 
 class PrecioInvalidoError(DatoInvalidoError):
-    pass
+    """ Precio no númerico o negativo """
 
 
 class StockInsuficienteError(FoodStoreError):
-    pass
+    """ Cantidad pedida mayor al stock disponible """
 
 
 class DuplicadoError(FoodStoreError):
-    pass
+    """ Mail de usuario o nombre de categoría repetido"""
 
 
 class OperacionNoPermitidaError(FoodStoreError):
-    pass
+    """ Regla de negocio violada: transición de estado inválida: categoría con productos activos, administrador que intenta eliminarse,etc """
 
 
 class CredencialesInvalidasError(FoodStoreError):
-    pass
+    """ Mail o contraseña incorrectos, o usuario eliminado."""
