@@ -76,3 +76,6 @@ class MenuCliente(Menu):
                     print("\n[Error] Opción fuera de rango. Intente nuevamente.")
             except FoodStoreError as e:
                 print(f"\n[Error de Negocio]: {e}")
+            except Exception as e:
+                # Pauta: un error nunca cierra el programa; se informa y se vuelve al menú
+                print(f"\n[Error inesperado]: {e}")

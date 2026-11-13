@@ -21,18 +21,19 @@ class PedidoServicio:
             
         nuevo_pedido = Pedido(usuario=usuario, forma_pago=forma_pago)
         
-        # Validar y agregar detalles descontando stock temporalmente
+        # 1) Validar y agregar todos los detalles (agregar_detalle controla el stock
+        #    contra la cantidad acumulada, por si el mismo producto aparece más de una vez)
         for cantidad, producto in items:
             if cantidad <= 0:
                 raise OperacionNoPermitidaError("La cantidad del producto debe ser mayor a 0.")
             if cantidad > producto.stock:
                 raise StockInsuficienteError(f"Stock insuficiente para el producto '{producto.nombre}'. Stock actual: {producto.stock}")
-            
-            # Descontar stock
-            producto.stock -= cantidad
-            # Agregar detalle al pedido
             nuevo_pedido.agregar_detalle(cantidad, producto)
-            
+
+        # 2) Recién cuando todo es válido, descontar el stock (si algo falló antes, no se tocó nada)
+        for detalle in nuevo_pedido.detalles:
+            detalle.producto.stock -= detalle.cantidad
+
         # Calcular total usando la interfaz Calculable
         nuevo_pedido.calcular_total()
         self._pedidos.append(nuevo_pedido)

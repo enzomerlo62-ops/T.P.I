@@ -82,8 +82,13 @@ class MenuAdministrador(Menu):
                     print("\n[Éxito] Categoría eliminada lógicamente.")
                 elif op == 0:
                     break
+                else:
+                    print("\n[Error] Opción fuera de rango.")
             except FoodStoreError as e:
                 print(f"\n[Error]: {e}")
+            except Exception as e:
+                # Pauta: un error nunca cierra el programa; se informa y se vuelve al menú
+                print(f"\n[Error inesperado]: {e}")
         return True
 
     def _ges_productos(self) -> bool:
@@ -113,10 +118,14 @@ class MenuAdministrador(Menu):
                 elif op == 3:
                     id_p = leer_entero("ID de producto a editar: ")
                     nom = input("Nuevo nombre (Enter para conservar): ")
-                    p_str = input("Nuevo precio (Enter para conservar): ")
-                    precio = float(p_str) if p_str else None
-                    stock_str = input("Nuevo stock (Enter para conservar): ")
-                    stock = int(stock_str) if stock_str else None
+                    p_str = input("Nuevo precio (Enter para conservar): ").strip()
+                    stock_str = input("Nuevo stock (Enter para conservar): ").strip()
+                    try:
+                        precio = float(p_str) if p_str else None
+                        stock = int(stock_str) if stock_str else None
+                    except ValueError:
+                        print("\n[Error] El precio debe ser un número y el stock un número entero.")
+                        continue
                     self._prod_serv.editar(id_p, nom if nom else None, precio, stock=stock)
                     print("\n[Éxito] Producto actualizado.")
                 elif op == 4:
@@ -125,8 +134,13 @@ class MenuAdministrador(Menu):
                     print("\n[Éxito] Producto eliminado lógicamente.")
                 elif op == 0:
                     break
+                else:
+                    print("\n[Error] Opción fuera de rango.")
             except FoodStoreError as e:
                 print(f"\n[Error]: {e}")
+            except Exception as e:
+                # Pauta: un error nunca cierra el programa; se informa y se vuelve al menú
+                print(f"\n[Error inesperado]: {e}")
         return True
 
     def _ges_usuarios(self) -> bool:
@@ -157,8 +171,13 @@ class MenuAdministrador(Menu):
                     print("\n[Éxito] Usuario eliminado lógicamente.")
                 elif op == 0:
                     break
+                else:
+                    print("\n[Error] Opción fuera de rango.")
             except FoodStoreError as e:
                 print(f"\n[Error]: {e}")
+            except Exception as e:
+                # Pauta: un error nunca cierra el programa; se informa y se vuelve al menú
+                print(f"\n[Error inesperado]: {e}")
         return True
 
     def _ges_pedidos(self) -> bool:
@@ -197,7 +216,10 @@ class MenuAdministrador(Menu):
                     id_ped = leer_entero("ID del Pedido a actualizar: ")
                     print("Estados: 1. PENDIENTE | 2. CONFIRMADO | 3. TERMINADO | 4. CANCELADO")
                     e_op = leer_entero("Seleccione nuevo estado: ")
-                    estado = [Estado.PENDIENTE, Estado.CONFIRMADO, Estado.TERMINADO, Estado.CANCELADO][e_op - 1]
+                    if e_op not in (1, 2, 3, 4):
+                        print("\n[Error] Opción de estado fuera de rango.")
+                        continue
+                    estado =[Estado.PENDIENTE, Estado.CONFIRMADO, Estado.TERMINADO, Estado.CANCELADO][e_op - 1]
                     self._ped_serv.actualizar_estado(id_ped, estado)
                     print("\n[Éxito] Estado de pedido actualizado.")
                 elif op == 4:
@@ -206,6 +228,11 @@ class MenuAdministrador(Menu):
                     print("\n[Éxito] Pedido eliminado lógicamente.")
                 elif op == 0:
                     break
+                else:
+                    print("\n[Error] Opción fuera de rango.")
             except FoodStoreError as e:
                 print(f"\n[Error]: {e}")
+            except Exception as e:
+                # Pauta: un error nunca cierra el programa; se informa y se vuelve al menú
+                print(f"\n[Error inesperado]: {e}")
         return True

@@ -2,6 +2,7 @@ from entidades.pedido import Pedido
 from entidades.usuario import Usuario
 from enums.rol import Rol
 from enums.forma_pago import FormaPago
+from excepciones.food_store_error import DatoInvalidoError
 
 u = Usuario("Ana", "Pérez", "ana@mail.com", "", "1234", Rol.USUARIO)
 

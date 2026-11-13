@@ -29,7 +29,7 @@ class DetallePedido(Base):
     def _sumar_cantidad(self,cantidad:int) -> None:
         self.__validar_cantidad(cantidad)
         self.__cantidad += cantidad
-        self._actualizar_subtotal()
+        self.__actualizar_subtotal()
         
 #--------- Property de solo Lectura ---------------------------------
 
