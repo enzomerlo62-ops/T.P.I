@@ -4,6 +4,8 @@ from entidades.producto import Producto
 from enums.estado import Estado
 from enums.forma_pago import FormaPago
 from excepciones.food_store_error import EntidadNoEncontradaError, StockInsuficienteError, OperacionNoPermitidaError,DatoInvalidoError
+from excepciones.food_store_error import EntidadNoEncontradaError, DatoInvalidoError
+
 
 class PedidoServicio:
     def __init__(self) -> None:
@@ -37,6 +39,23 @@ class PedidoServicio:
             detalle.producto.stock -= detalle.cantidad
 
         # Calcular total usando la interfaz Calculable
+    def crear_pedido(self, usuario: Usuario, forma_pago: FormaPago,
+                     items: list[tuple[int, Producto]]) -> Pedido:
+        # Composición 1..m: un pedido tiene al menos un detalle
+        if not items:
+            raise DatoInvalidoError("El pedido debe tener al menos un producto.")
+
+        nuevo_pedido = Pedido(usuario=usuario, forma_pago=forma_pago)
+
+        # 1) Agregar todos los detalles: agregar_detalle valida cantidad, producto y stock
+        for cantidad, producto in items:
+            nuevo_pedido.agregar_detalle(cantidad, producto)
+
+        # 2) Recién cuando todo es válido, descontar el stock (si algo falló, no se tocó nada)
+        for detalle in nuevo_pedido.detalles:
+            detalle.producto.stock -= detalle.cantidad
+
+        # Total establecido con la interfaz Calculable
         nuevo_pedido.calcular_total()
         self._pedidos.append(nuevo_pedido)
         return nuevo_pedido
@@ -47,35 +66,35 @@ class PedidoServicio:
                 return p
         raise EntidadNoEncontradaError(f"No se encontró el pedido con ID {id_pedido}.")
 
-    def actualizar_estado(self, id_pedido: int, nuevo_estado: Estado, nueva_forma_pago: FormaPago | None = None) -> Pedido:
+    def buscar_de_usuario(self, id_pedido: int, usuario: Usuario) -> Pedido:
+        """Para el cliente: un pedido ajeno se informa como inexistente (HU-PED-05)."""
         pedido = self.buscar_por_id(id_pedido)
-        
-        # Validar transiciones de estado
-        # PENDIENTE -> CONFIRMADO -> TERMINADO
-        # PENDIENTE o CONFIRMADO -> CANCELADO
-        estado_actual = pedido.estado
-        
-        if estado_actual in [Estado.TERMINADO, Estado.CANCELADO]:
-            raise OperacionNoPermitidaError("Un pedido Terminado o Cancelado no puede cambiar de estado.")
-            
-        if nuevo_estado == Estado.CANCELADO:
-            # Devolver stock al cancelar
-            for detalle in pedido.detalles:
-                detalle.producto.stock += detalle.cantidad
-        elif estado_actual == Estado.PENDIENTE and nuevo_estado not in [Estado.CONFIRMADO, Estado.CANCELADO]:
-            raise OperacionNoPermitidaError("Transición de estado inválida desde PENDIENTE.")
-        elif estado_actual == Estado.CONFIRMADO and nuevo_estado not in [Estado.TERMINADO, Estado.CANCELADO]:
-            raise OperacionNoPermitidaError("Transición de estado inválida desde CONFIRMADO.")
+        if pedido.usuario.id != usuario.id:
+            raise EntidadNoEncontradaError(f"No se encontró el pedido con ID {id_pedido}.")
+        return pedido
 
-        pedido.estado = nuevo_estado
-        if nueva_forma_pago:
+    def actualizar_estado(self, id_pedido: int, nuevo_estado: Estado | None = None,
+                          nueva_forma_pago: FormaPago | None = None) -> Pedido:
+        """Cambia el estado y/o la forma de pago (None = conservar el valor actual)."""
+        pedido = self.buscar_por_id(id_pedido)
+
+        if nuevo_estado is not None:
+            # El setter de Pedido valida la transición con TRANSICIONES:
+            # si no es válida lanza OperacionNoPermitidaError y no cambia nada
+            pedido.estado = nuevo_estado
+            # Solo si el cambio fue válido se devuelve el stock
+            if nuevo_estado == Estado.CANCELADO:
+                for detalle in pedido.detalles:
+                    detalle.producto.stock += detalle.cantidad
+
+        if nueva_forma_pago is not None:
             pedido.forma_pago = nueva_forma_pago
-            
+
         return pedido
 
     def eliminar(self, id_pedido: int) -> None:
         pedido = self.buscar_por_id(id_pedido)
-        if pedido.estado not in [Estado.TERMINADO, Estado.CANCELADO]:
+        if pedido.estado not in (Estado.TERMINADO, Estado.CANCELADO):
             # Devolver stock si se elimina un pedido activo
             for detalle in pedido.detalles:
                 detalle.producto.stock += detalle.cantidad
