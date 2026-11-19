@@ -71,7 +71,6 @@ def main() -> None:
             print("\n[Aviso] Se agotaron los 3 intentos permitidos. El programa ha finalizado.")
             break
 
-        # Crear el menú según el rol (Polimorfismo puro)
         # Crear el menú según el rol (polimorfismo)
         menu = crear_menu(usuario_actual, cat_serv, prod_serv, usu_serv, ped_serv)
 
