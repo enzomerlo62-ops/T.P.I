@@ -51,4 +51,4 @@ class DetallePedido(Base):
 
     def __str__(self) -> str:
         return (f"{self.producto.nombre} x {self.cantidad} "
-               f" (${self.__precio_unitario:.2f} c/u) - Subtotal: ${self.subtotal:.2f}")
+               f"(${self.__precio_unitario:.2f} c/u) - Subtotal: ${self.subtotal:.2f}")
