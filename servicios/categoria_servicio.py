@@ -43,10 +43,6 @@ class CategoriaServicio:
         cat = self.buscar_por_id(id_cat)
         activos = cat.productos_activos()
         if activos:
-
-            raise OperacionNoPermitidaError("No se puede eliminar una categoría con productos activos.")
-        cat.eliminado = True
-
             raise OperacionNoPermitidaError(
                 f"No se puede eliminar: la categoría tiene {len(activos)} producto(s) activo(s)."
             )
