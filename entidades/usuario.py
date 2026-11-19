@@ -18,7 +18,8 @@ class Usuario(Base):
         self.apellido = apellido
         self.mail = mail
         self.celular = celular
-        self.__contrasenia = contrasenia
+        self.__validar_contrasenia(contrasenia)
+        self.__contrasenia: str = contrasenia
         self.rol = rol
 
     @property
@@ -69,12 +70,17 @@ class Usuario(Base):
             raise DatoInvalidoError("Rol inválido.")
         self.__rol = valor
 
+    # --- Contraseña: sin property, nunca sale del objeto ---
+    @staticmethod
+    def __validar_contrasenia(contrasenia: str) -> None:
+        if not isinstance(contrasenia, str) or len(contrasenia.strip()) < 4:
+            raise DatoInvalidoError("La contraseña debe tener al menos 4 caracteres.")
+
     def verificar_contrasenia(self, contrasenia: str) -> bool:
         return self.__contrasenia == contrasenia
 
     def cambiar_contrasenia(self, nueva: str) -> None:
-        if not nueva or len(nueva) < 4:
-            raise DatoInvalidoError("La contraseña debe tener al menos 4 caracteres.")
+        self.__validar_contrasenia(nueva)
         self.__contrasenia = nueva
 
     def __str__(self) -> str:
