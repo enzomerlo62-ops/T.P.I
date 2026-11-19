@@ -3,7 +3,6 @@ from entidades.usuario import Usuario
 from enums.rol import Rol
 from enums.forma_pago import FormaPago
 from excepciones.food_store_error import DatoInvalidoError
-from base import Base     # Borrar 
 
 
 u = Usuario("Ana", "Pérez", "ana@mail.com", "", "1234", Rol.USUARIO)
@@ -17,13 +16,3 @@ for valor in ("TARJETA", 1, None):
         print("MAL: aceptó", repr(valor))
     except DatoInvalidoError as e:
         print("BIEN: rechazó", repr(valor), "->", e)
-        
-        
-#------------------ PRACTICAS DE CLASE __-----------------------------
-class detalle_pedido:
-    def __init__(self,id,eliminado,):
-        super().__init__(id,eliminado)
-        self.cantidad = cantidad
-        self.subtotal = subtotal
-        
-        
