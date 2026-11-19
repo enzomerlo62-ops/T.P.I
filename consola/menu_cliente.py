@@ -52,14 +52,12 @@ class MenuCliente(Menu):
                         # Opción para ver detalles de un pedido propio
                         id_ped = leer_entero("Ingrese el ID del pedido para ver sus detalles (0 para volver): ")
                         if id_ped != 0:
-                            pedido = self._ped_serv.buscar_por_id(id_ped)
-                            if pedido.usuario.id != self._usuario.id:
-                                print("\n[Error] El pedido no pertenece a tu usuario.")
-                            else:
-                                print(f"\nDetalles del Pedido #{pedido.id}:")
-                                for det in pedido.detalles:
-                                    print(f" - {det.producto.nombre} x {det.cantidad} un. (Subtotal: ${det.subtotal})")
-                                print(f"Total a pagar: ${pedido.total}")
+                            # Un pedido de otro usuario se informa como inexistente (HU-PED-05)
+                            pedido = self._ped_serv.buscar_de_usuario(id_ped, self._usuario)
+                            print(f"\nDetalles del Pedido #{pedido.id}:")
+                            for det in pedido.detalles:
+                                print(f" - {det}")
+                            print(f"Total: ${pedido.total:.2f}")
                 elif opcion == 4:
                     print("\n--- MIS DATOS ---")
                     print(f"Nombre: {self._usuario.nombre} {self._usuario.apellido}")
