@@ -32,3 +32,10 @@ def leer_texto(mensaje: str) -> str:
         if texto != "":
             return texto
         print("[Error] El texto no puede estar vacío.")
+        
+def leer_si_no(mensaje:str) -> bool:
+    while True:
+        respuesta = input(mensaje).strip().upper()
+        if respuesta in("S","N"):
+            return respuesta == "S"
+        print("[ERROR] Responda S o N")

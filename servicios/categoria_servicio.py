@@ -39,8 +39,9 @@ class CategoriaServicio:
             
         return cat
 
-    def eliminar(self, id_cat: int, productos_asociados_activos: int = 0) -> None:
+    def eliminar(self, id_cat: int) -> None:
         cat = self.buscar_por_id(id_cat)
-        if productos_asociados_activos > 0:
+        activos = cat.productos_activos()
+        if activos:
             raise OperacionNoPermitidaError("No se puede eliminar una categoría con productos activos.")
         cat.eliminado = True

@@ -16,6 +16,9 @@ DECISIONES TÉCNICAS
 [10/11] [L] DECISIÓN: setter de forma_pago en pedido.py asigna sin revisar nada  → se agrega la validación en el setters y en el constructor sin guiones bajos ("self.forma_pago = forma_pago") para pasar por el setters.
 [10/11] [L] DECISIÓN: class Pedido sin validacion de usuario en constructor → Si el usuario es inválido, el pedido no se crea, y así tampoco se gasta un id del contador
 [10/11] [L] DECISIÓN: No se respeta la regla de negocio de los Estados  → Se define una tabla de transiciones como diccionario pra los estados de los pedidos segun la regla de negocio
+[10/11] [L] DECISIÓN: Usás Producto en los type hints, pero nunca lo importás → categoria.py from __future__ import annotations hace que Python no evalúe los type hints al leer la clase. Los guarda como texto.
+[10/11] [L] DECISIÓN: import circular → if TYPE_CHECKING  → es False cuando el programa se ejecuta, así que ese import nunca corre de verdad
+
 
 DIFICULTADES Y SOLUCIONES
 -------------------------

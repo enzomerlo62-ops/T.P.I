@@ -1,4 +1,4 @@
-from consola.menu_base import Menu, leer_entero, leer_flotante, leer_texto
+from consola.menu_base import Menu, leer_entero, leer_flotante, leer_texto, leer_si_no
 from servicios.categoria_servicio import CategoriaServicio
 from servicios.producto_servicio import ProductoServicio
 from servicios.usuario_servicio import UsuarioServicio
@@ -8,6 +8,7 @@ from enums.rol import Rol
 from enums.estado import Estado
 from enums.forma_pago import FormaPago
 from excepciones.food_store_error import FoodStoreError
+
 
 class MenuAdministrador(Menu):
     def __init__(self, usuario: Usuario, cat_serv: CategoriaServicio, prod_serv: ProductoServicio, usu_serv: UsuarioServicio, ped_serv: PedidoServicio) -> None:
@@ -75,11 +76,14 @@ class MenuAdministrador(Menu):
                     self._cat_serv.editar(id_c, nom if nom else None, desc if desc else None)
                     print("\n[Éxito] Categoría actualizada.")
                 elif op == 4:
-                    id_c = leer_entero("ID de categoría a eliminar: ")
-                    # Contar productos asociados activos
-                    prods = [p for p in self._prod_serv.listar() if p.categoria.id == id_c]
-                    self._cat_serv.eliminar(id_c, len(prods))
-                    print("\n[Éxito] Categoría eliminada lógicamente.")
+                    for c in self._cat_serv.listar():
+                        print(c)
+                    id_c = leer_entero("ID de categoria a eliminar: ")
+                    if leer_si_no("¿Confirma la elimincaión? (S/N):"):
+                        self._cat_serv.eliminar(id_c)
+                        print("\n [Éxito] Categoría eliminada lógicamente")
+                    else:
+                        print("\n [Aviso] Operación cancelada")
                 elif op == 0:
                     break
                 else:

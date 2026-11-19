@@ -15,13 +15,14 @@ class Producto(Base):
         categoria: Categoria
     ) -> None:
         super().__init__()
+        self.__categoria: Categoria | None = None    #  <- Agregar antes de los setters
         self.nombre = nombre
         self.precio = precio
         self.descripcion = descripcion
         self.stock = stock
         self.imagen = imagen
         self.disponible = disponible
-        self.categoria = categoria
+        
 
     @property
     def nombre(self) -> str:
@@ -89,6 +90,9 @@ class Producto(Base):
     def categoria(self, valor: Categoria) -> None:
         if not isinstance(valor, Categoria):
             raise DatoInvalidoError("Debe ser una categoría válida.")
+        if self.__categoria is not None:
+            self.__categoria._quitar_producto(self)    # sale de la categoria anterior 
+        valor._agregar_producto(self)                  #  entra en la nueva
         self.__categoria = valor
 
     def __str__(self) -> str:

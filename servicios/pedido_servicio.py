@@ -3,7 +3,7 @@ from entidades.usuario import Usuario
 from entidades.producto import Producto
 from enums.estado import Estado
 from enums.forma_pago import FormaPago
-from excepciones.food_store_error import EntidadNoEncontradaError, StockInsuficienteError, OperacionNoPermitidaError
+from excepciones.food_store_error import EntidadNoEncontradaError, StockInsuficienteError, OperacionNoPermitidaError,DatoInvalidoError
 
 class PedidoServicio:
     def __init__(self) -> None:
@@ -16,6 +16,8 @@ class PedidoServicio:
         return [p for p in self._pedidos if not p.eliminado and p.usuario.id == usuario.id]
 
     def crear_pedido(self, usuario: Usuario, forma_pago: FormaPago, items: list[tuple[int, Producto]]) -> Pedido:
+        if not items:
+            raise DatoInvalidoError("El pedido debe tener al menos un producto")
         if usuario.eliminado:
             raise OperacionNoPermitidaError("No se puede crear un pedido con un usuario eliminado.")
             
